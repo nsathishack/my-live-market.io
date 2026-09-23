@@ -3,73 +3,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Live Market Dashboard</title>
+    <title>Free HTML5 Ludo Game</title>
     <style>
+        :root {
+            --red: #ff4d4d;
+            --green: #2ecc71;
+            --yellow: #f1c40f;
+            --blue: #3498db;
+            --border: #333;
+        }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f6fa;
             margin: 0;
-            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
-        h1 { color: #1a1a1a; margin-bottom: 30px; }
-        .dashboard-container {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
             justify-content: center;
-            max-width: 1200px;
-            width: 100%;
+            min-height: 100vh;
         }
-        .widget-card {
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        .game-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+        /* Ludo Board CSS Grid Layout */
+        .board {
+            width: 450px;
+            height: 450px;
+            background-color: #fff;
+            border: 4px solid var(--border);
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            grid-template-rows: repeat(15, 1fr);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        .cell {
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        /* Home Yards */
+        .red-home { grid-column: 1 / 7; grid-row: 1 / 7; background-color: var(--red); position: relative; }
+        .green-home { grid-column: 10 / 16; grid-row: 1 / 7; background-color: var(--green); position: relative; }
+        .yellow-home { grid-column: 10 / 16; grid-row: 10 / 16; background-color: var(--yellow); position: relative; }
+        .blue-home { grid-column: 1 / 7; grid-row: 10 / 16; background-color: var(--blue); position: relative; }
+        
+        /* White inner pockets for tokens */
+        .yard-inner {
+            position: absolute;
+            top: 15%; left: 15%; width: 70%; height: 70%;
+            background-color: #fff;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            padding: 10px;
+            box-sizing: border-box;
+            gap: 10px;
+        }
+        .token-slot {
+            border-radius: 50%;
+            border: 2px dashed #999;
+        }
+        .red-slot { background-color: var(--red); }
+        .green-slot { background-color: var(--green); }
+        .yellow-slot { background-color: var(--yellow); }
+        .blue-slot { background-color: var(--blue); }
+
+        /* Center Triangle */
+        .center-home {
+            grid-column: 7 / 10;
+            grid-row: 7 / 10;
+            background: conic-gradient(
+                var(--red) 45deg, 
+                var(--green) 45deg 135deg, 
+                var(--yellow) 135deg 225deg, 
+                var(--blue) 225deg 315deg, 
+                var(--red) 315deg
+            );
+            border: 1px solid var(--border);
+        }
+
+        /* Track Colors */
+        .bg-red { background-color: var(--red); }
+        .bg-green { background-color: var(--green); }
+        .bg-yellow { background-color: var(--yellow); }
+        .bg-blue { background-color: var(--blue); }
+        .star-cell { background-color: #dcdde1; position: relative; }
+        .star-cell::after { content: '★'; position: absolute; top:50%; left:50%; transform:translate(-50%, -50%); color: #7f8c8d; font-size: 14px;}
+
+        /* Controls */
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
             background: white;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            padding: 15px;
-            width: 350px;
-            min-height: 150px; /* Ensures the box stays open while loading */
+            padding: 15px 30px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .turn-indicator {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+        .dice {
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            border: 3px solid var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            user-select: none;
+        }
+        .dice:active {
+            transform: scale(0.9);
         }
     </style>
 </head>
 <body>
 
-    <h1>Live Financial Overview</h1>
+    <h1>HTML5 Ludo Board</h1>
+    
+    <div class="game-container">
+        <!-- Ludo Board Structure -->
+        <div class="board">
+            <!-- Red Home -->
+            <div class="red-home">
+                <div class="yard-inner">
+                    <div class="token-slot red-slot"></div>
+                    <div class="token-slot red-slot"></div>
+                    <div class="token-slot red-slot"></div>
+                    <div class="token-slot red-slot"></div>
+                </div>
+            </div>
+            
+            <!-- Row 1-6 / Col 7-9 (Top Track) -->
+            <div class="cell"></div><div class="cell bg-green"></div><div class="cell star-cell"></div>
+            <div class="cell"></div><div class="cell bg-green"></div><div class="cell"></div>
+            <div class="cell"></div><div class="cell bg-green"></div><div class="cell"></div>
+            <div class="cell"></div><div class="cell bg-green"></div><div class="cell"></div>
+            <div class="cell"></div><div class="cell bg-green"></div><div class="cell"></div>
+            <div class="cell"></div><div class="cell bg-green"></div><div class="cell"></div>
 
-    <div class="dashboard-container">
-        <!-- WIDGET 1: LIVE GOLD PRICE (XAUUSD) -->
-        <div class="widget-card">
-            <div class="tradingview-widget-container">
-                <div class="tradingview-widget-container__widget"></div>
-                <script type="text/javascript" src="https://tradingview.com" async>
-                {
-                    "symbol": "FX_IDC:XAUUSD",
-                    "width": "100%",
-                    "colorTheme": "light",
-                    "isTransparent": false,
-                    "locale": "en"
-                }
-                </script>
+            <!-- Green Home -->
+            <div class="green-home">
+                <div class="yard-inner">
+                    <div class="token-slot green-slot"></div>
+                    <div class="token-slot green-slot"></div>
+                    <div class="token-slot green-slot"></div>
+                    <div class="token-slot green-slot"></div>
+                </div>
+            </div>
+
+            <!-- Row 7-9 / Col 1-6 (Left Track) -->
+            <div class="cell"></div><div class="cell bg-red"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+            <div class="cell star-cell"></div><div class="cell bg-red"></div><div class="cell bg-red"></div><div class="cell bg-red"></div><div class="cell bg-red"></div><div class="cell bg-red"></div>
+            <div class="cell"></div><div class="cell"></div><div class="cell star-cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+
+            <!-- Center Triangle Zone -->
+            <div class="center-home"></div>
+
+            <!-- Row 7-9 / Col 10-15 (Right Track) -->
+            <div class="cell"></div><div class="cell"></div><div class="cell star-cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+            <div class="cell bg-yellow"></div><div class="cell bg-yellow"></div><div class="cell bg-yellow"></div><div class="cell bg-yellow"></div><div class="cell bg-yellow"></div><div class="cell star-cell"></div>
+            <div class="cell"></div><div class="cell"></div><div class="cell bg-yellow"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+
+            <!-- Blue Home -->
+            <div class="blue-home">
+                <div class="yard-inner">
+                    <div class="token-slot blue-slot"></div>
+                    <div class="token-slot blue-slot"></div>
+                    <div class="token-slot blue-slot"></div>
+                    <div class="token-slot blue-slot"></div>
+                </div>
+            </div>
+
+            <!-- Row 10-15 / Col 7-9 (Bottom Track) -->
+            <div class="cell"></div><div class="cell bg-blue"></div><div class="cell"></div>
+            <div class="cell"></div><div class="cell bg-blue"></div><div class="cell"></div>
+            <div class="cell"></div><div class="cell bg-blue"></div><div class="cell"></div>
+            <div class="cell"></div><div class="cell bg-blue"></div><div class="cell"></div>
+            <div class="cell"></div><div class="cell bg-blue"></div><div class="cell star-cell"></div>
+            <div class="cell"></div><div class="cell bg-blue"></div><div class="cell"></div>
+
+            <!-- Yellow Home -->
+            <div class="yellow-home">
+                <div class="yard-inner">
+                    <div class="token-slot yellow-slot"></div>
+                    <div class="token-slot yellow-slot"></div>
+                    <div class="token-slot yellow-slot"></div>
+                    <div class="token-slot yellow-slot"></div>
+                </div>
             </div>
         </div>
 
-        <!-- WIDGET 2: LIVE STOCK PRICE (APPLE) -->
-        <div class="widget-card">
-            <div class="tradingview-widget-container">
-                <div class="tradingview-widget-container__widget"></div>
-                <script type="text/javascript" src="https://tradingview.com" async>
-                {
-                    "symbol": "NASDAQ:AAPL",
-                    "width": "100%",
-                    "colorTheme": "light",
-                    "isTransparent": false,
-                    "locale": "en"
-                }
-                </script>
-            </div>
+        <!-- Interactive Dice Controls -->
+        <div class="controls">
+            <div class="turn-indicator" id="turnIndicator">Turn: <span style="color:var(--red)">Red</span></div>
+            <div class="dice" id="ludoDice" onclick="rollDice()">⚀</div>
         </div>
     </div>
 
-</body>
-</html>
+    <script>
+        const players = ['Red', 'Green', 'Yellow', 'Blue'];
+        const colors = ['var(--red)', 'var(--green)', 'var(--yellow)', 'var(--blue)'];
+        const diceFaces = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅'];
+        let currentPlayerIndex = 0;
+        let isRolling = false;
+
+        function rollDice() {
+            if (isRolling) return;
+            isRolling = true;
+            
+            const diceElement = document.getElementById('ludoDice');
+            let counter = 0;
+            
+            // Dice rolling animation effect
+            const interval = setInterval(() => {
+                const randomFace = Math.floor(Math.random() * 6);
+                diceElement.textContent = diceFaces[randomFace];
+                counter++;
+                
+                if (counter > 8) {
+                    clearInterval(interval);
+                    // Final roll outcome
