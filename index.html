@@ -29,6 +29,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
             padding: 15px;
             width: 350px;
+            min-height: 150px; /* Ensures the box stays open while loading */
         }
     </style>
 </head>
@@ -43,11 +44,11 @@
                 <div class="tradingview-widget-container__widget"></div>
                 <script type="text/javascript" src="https://tradingview.com" async>
                 {
-                  "symbol": "FX_IDC:XAUUSD",
-                  "width": "100%",
-                  "colorTheme": "light",
-                  "isTransparent": true,
-                  "locale": "en"
+                    "symbol": "FX_IDC:XAUUSD",
+                    "width": "100%",
+                    "colorTheme": "light",
+                    "isTransparent": false,
+                    "locale": "en"
                 }
                 </script>
             </div>
@@ -59,11 +60,11 @@
                 <div class="tradingview-widget-container__widget"></div>
                 <script type="text/javascript" src="https://tradingview.com" async>
                 {
-                  "symbol": "NASDAQ:AAPL",
-                  "width": "100%",
-                  "colorTheme": "light",
-                  "isTransparent": true,
-                  "locale": "en"
+                    "symbol": "NASDAQ:AAPL",
+                    "width": "100%",
+                    "colorTheme": "light",
+                    "isTransparent": false,
+                    "locale": "en"
                 }
                 </script>
             </div>
