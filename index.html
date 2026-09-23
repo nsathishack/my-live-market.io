@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Market Dashboard</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 { color: #1a1a1a; margin-bottom: 30px; }
+        .dashboard-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1200px;
+            width: 100%;
+        }
+        .widget-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 15px;
+            width: 350px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Live Financial Overview</h1>
+
+    <div class="dashboard-container">
+        <!-- WIDGET 1: LIVE GOLD PRICE (XAUUSD) -->
+        <div class="widget-card">
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <script type="text/javascript" src="https://tradingview.com" async>
+                {
+                  "symbol": "FX_IDC:XAUUSD",
+                  "width": "100%",
+                  "colorTheme": "light",
+                  "isTransparent": true,
+                  "locale": "en"
+                }
+                </script>
+            </div>
+        </div>
+
+        <!-- WIDGET 2: LIVE STOCK PRICE (APPLE) -->
+        <div class="widget-card">
+            <div class="tradingview-widget-container">
+                <div class="tradingview-widget-container__widget"></div>
+                <script type="text/javascript" src="https://tradingview.com" async>
+                {
+                  "symbol": "NASDAQ:AAPL",
+                  "width": "100%",
+                  "colorTheme": "light",
+                  "isTransparent": true,
+                  "locale": "en"
+                }
+                </script>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
